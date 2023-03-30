@@ -1,0 +1,50 @@
+type Employee {
+    id: ID!
+    firstName: String!
+    surname: String!
+    profession: Profession!
+}
+type Profession {
+    id: ID!
+    observedOccupation: String!
+    serviceDiscipline: String!
+}
+type HealthPractice {
+    id: ID!
+    name: String!
+    precaution: Precaution
+}
+type Location {
+    id: ID!
+    facilityName: String!
+    unitNum: String!
+    roomNum: String!
+}
+type Precaution {
+    id: ID!
+    name: String!
+    practices: [HealthPractice]!
+}
+scalar Date
+type Report {
+    id: ID!
+    employee: Employee!
+    healthPractice: HealthPractice!
+    location: Location!
+    date: Date!
+}
+
+type Query {
+    employees: [Employee]
+    employeeById(id: ID): Employee
+    healthPractices: [HealthPractice]
+    healthPracticeById(id: ID): HealthPractice
+    locations: [Location]
+    locationById(id: ID): Location
+    precautions: [Precaution]
+    precautionById(id: ID): Precaution
+    professions: [Profession]
+    professionById(id: ID): Profession
+    reports: [Report]
+    reportById(id: ID): Report
+}

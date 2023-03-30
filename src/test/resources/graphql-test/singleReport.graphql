@@ -1,0 +1,16 @@
+query singleReport($id: ID) {
+    reportById(id: $id) {
+        employee {
+            firstName
+            surname
+        }
+        healthPractice {
+            name
+        }
+        location {
+            facilityName
+            unitNum
+            roomNum
+        }
+    }
+}

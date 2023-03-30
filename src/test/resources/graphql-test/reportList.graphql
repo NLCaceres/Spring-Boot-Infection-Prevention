@@ -1,0 +1,26 @@
+query reportList {
+    reports {
+        id
+        employee {
+            id
+            firstName
+            surname
+            profession {
+                id
+                observedOccupation
+                serviceDiscipline
+            }
+        }
+        healthPractice {
+            id
+            name
+        }
+        location {
+            id
+            facilityName
+            unitNum
+            roomNum
+        }
+        date
+    }
+}

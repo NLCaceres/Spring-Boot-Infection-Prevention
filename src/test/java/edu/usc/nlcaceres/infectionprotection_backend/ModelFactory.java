@@ -28,7 +28,7 @@ public class ModelFactory {
     // Get an "Isolation" precaution with id "abc" OR with a name of your choice
     public static Precaution getPrecaution(String name) {
         String finalName = name != null ? name : "Isolation";
-        return Precaution.of("abc", finalName, List.of());
+        return Precaution.of("abc", finalName, List.of(getHealthPractice(null), getHealthPractice("PPE")));
     }
     // Get a "Clinic Doctor" with id "abc" OR with an occupation and discipline of your choice
     public static Profession getProfession(String observedOccupation, String serviceDiscipline) {
