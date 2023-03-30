@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 import java.time.Instant;
 
 @Data @RequiredArgsConstructor(staticName = "of")
@@ -16,5 +17,5 @@ public class Report {
     // TODO: Convert field from "healthPractice" to "health_practice" (see Location.java for details)
     @DocumentReference @NonNull private HealthPractice healthPractice;
     @DocumentReference @NonNull private Location location;
-    @NonNull private Instant date;
+    @Field("date_reported") @NonNull private Instant date;
 }
