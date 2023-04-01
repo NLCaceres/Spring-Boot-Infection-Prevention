@@ -1,6 +1,7 @@
-package edu.usc.nlcaceres.infectionprotection_backend.controllers;
+package edu.usc.nlcaceres.infectionprotection_backend.controllers.graphql;
 
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
+import edu.usc.nlcaceres.infectionprotection_backend.controllers.PrecautionGraphController;
 import edu.usc.nlcaceres.infectionprotection_backend.graphql_scalars.DateScalarConfiguration;
 import edu.usc.nlcaceres.infectionprotection_backend.models.HealthPractice;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Precaution;
@@ -16,12 +17,13 @@ import static org.mockito.Mockito.when;
 
 @GraphQlTest(PrecautionGraphController.class)
 @Import(DateScalarConfiguration.class)
-public class PrecautionGraphControllerTests {
+public class PrecautionControllerTests {
 
     @Autowired
     private GraphQlTester tester;
+
     @MockBean
-    PrecautionService precautionService;
+    private PrecautionService precautionService;
 
     @Test
     public void getPrecautionList() throws Exception {

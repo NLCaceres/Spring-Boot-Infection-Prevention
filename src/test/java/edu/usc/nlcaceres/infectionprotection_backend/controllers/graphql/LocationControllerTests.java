@@ -1,6 +1,7 @@
-package edu.usc.nlcaceres.infectionprotection_backend.controllers;
+package edu.usc.nlcaceres.infectionprotection_backend.controllers.graphql;
 
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
+import edu.usc.nlcaceres.infectionprotection_backend.controllers.LocationGraphController;
 import edu.usc.nlcaceres.infectionprotection_backend.graphql_scalars.DateScalarConfiguration;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Location;
 import edu.usc.nlcaceres.infectionprotection_backend.services.LocationService;
@@ -15,12 +16,13 @@ import static org.mockito.Mockito.when;
 
 @GraphQlTest(LocationGraphController.class)
 @Import(DateScalarConfiguration.class)
-public class LocationGraphControllerTests {
+public class LocationControllerTests {
 
     @Autowired
     private GraphQlTester tester;
+
     @MockBean
-    LocationService locationService;
+    private LocationService locationService;
 
     @Test
     public void getLocationList() throws Exception {

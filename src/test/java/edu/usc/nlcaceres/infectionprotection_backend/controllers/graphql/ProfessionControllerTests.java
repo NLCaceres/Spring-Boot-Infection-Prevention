@@ -1,6 +1,7 @@
-package edu.usc.nlcaceres.infectionprotection_backend.controllers;
+package edu.usc.nlcaceres.infectionprotection_backend.controllers.graphql;
 
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
+import edu.usc.nlcaceres.infectionprotection_backend.controllers.ProfessionGraphController;
 import edu.usc.nlcaceres.infectionprotection_backend.graphql_scalars.DateScalarConfiguration;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Profession;
 import edu.usc.nlcaceres.infectionprotection_backend.services.ProfessionService;
@@ -15,12 +16,13 @@ import static org.mockito.Mockito.when;
 
 @GraphQlTest(ProfessionGraphController.class)
 @Import(DateScalarConfiguration.class)
-public class ProfessionGraphControllerTests {
+public class ProfessionControllerTests {
 
     @Autowired
     private GraphQlTester tester;
+
     @MockBean
-    ProfessionService professionService;
+    private ProfessionService professionService;
 
     @Test
     public void getProfessionList() throws Exception {

@@ -1,6 +1,7 @@
-package edu.usc.nlcaceres.infectionprotection_backend.controllers;
+package edu.usc.nlcaceres.infectionprotection_backend.controllers.graphql;
 
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
+import edu.usc.nlcaceres.infectionprotection_backend.controllers.ReportGraphController;
 import edu.usc.nlcaceres.infectionprotection_backend.graphql_scalars.DateScalarConfiguration;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Report;
 import edu.usc.nlcaceres.infectionprotection_backend.services.ReportService;
@@ -15,12 +16,13 @@ import static org.mockito.Mockito.when;
 
 @GraphQlTest(ReportGraphController.class)
 @Import(DateScalarConfiguration.class)
-public class ReportGraphControllerTests {
+public class ReportControllerTests {
 
     @Autowired
     private GraphQlTester tester;
+
     @MockBean
-    ReportService reportService;
+    private ReportService reportService;
 
     @Test
     public void getReportList() throws Exception {

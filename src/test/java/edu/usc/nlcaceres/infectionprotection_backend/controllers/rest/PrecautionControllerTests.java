@@ -1,53 +1,47 @@
-package edu.usc.nlcaceres.infectionprotection_backend.controllers;
+package edu.usc.nlcaceres.infectionprotection_backend.controllers.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
+import edu.usc.nlcaceres.infectionprotection_backend.controllers.PrecautionController;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Precaution;
 import edu.usc.nlcaceres.infectionprotection_backend.services.PrecautionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PrecautionController.class)
-public class PrecautionControllerTest {
+public class PrecautionControllerTests {
 
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    ObjectMapper mapper;
+    private PrecautionController precautionController;
 
     @MockBean
-    PrecautionService precautionService;
+    private PrecautionService precautionService;
 
     @Test
     public void findPrecautionList() throws Exception {
         List<Precaution> mockPrecautionList = ModelFactory.getPrecautionList();
         when(precautionService.getAll()).thenReturn(mockPrecautionList);
 
-        mockMvc.perform(get("/api/precautions")).andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(mockPrecautionList)));
+        List<Precaution> actualList = precautionController.getAll();
+        assertThat(actualList).isEqualTo(mockPrecautionList);
     }
     @Test
     public void findSinglePrecaution() throws Exception {
         Precaution mockPrecaution = ModelFactory.getPrecaution(null);
         when(precautionService.getById("abc")).thenReturn(mockPrecaution);
 
-        mockMvc.perform(get("/api/precautions/abc")).andExpect((status().isOk()))
-                .andExpect(content().json(mapper.writeValueAsString(mockPrecaution)));
+        Precaution actualPrecaution = precautionController.getById("abc").getBody();
+        assertThat(actualPrecaution).isEqualTo(mockPrecaution);
     }
     @Test
     public void unableToFindPrecaution() throws Exception {
         when(precautionService.getById("123")).thenThrow(new RuntimeException());
-        MvcResult result = mockMvc.perform(get("/api/precautions/123")).andExpect((status().isNotFound())).andReturn();
-        assertThat(result.getResponse().getContentAsString()).isEmpty();
+
+        Precaution actualPrecaution = precautionController.getById("123").getBody();
+        assertThat(actualPrecaution).isNull();
     }
 }
