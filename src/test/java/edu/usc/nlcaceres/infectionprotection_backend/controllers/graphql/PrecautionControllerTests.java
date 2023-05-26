@@ -30,10 +30,10 @@ public class PrecautionControllerTests {
         List<Precaution> mockPrecautionList = ModelFactory.getPrecautionList();
         when(precautionService.getAll()).thenReturn(mockPrecautionList);
 
-        this.tester.document("{ precautions { id name practices { id name } } }").execute()
+        this.tester.document("{ precautions { id name healthPractices { id name } } }").execute()
                 .path("precautions").entityList(Precaution.class).hasSize(2)
-                .path("precautions[*].practices[*]").entityList(HealthPractice.class).hasSize(4);
-    } // If ".practices" didn't have [*], then would get [[],[]] i.e. the array of 2 precautions, each with 2 healthPractices
+                .path("precautions[*].healthPractices[*]").entityList(HealthPractice.class).hasSize(4);
+    } // If ".healthPractices" didn't have [*], then would get [[],[]] i.e. the array of 2 precautions, each with 2 healthPractices
     // Instead thanks to [*], we get a combined array of 4 healthPractices
 
     @Test

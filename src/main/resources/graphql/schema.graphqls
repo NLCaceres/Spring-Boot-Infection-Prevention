@@ -23,7 +23,7 @@ type Location {
 type Precaution {
     id: ID!
     name: String!
-    practices: [HealthPractice]!
+    healthPractices: [HealthPractice]!
 }
 scalar Date
 type Report {
