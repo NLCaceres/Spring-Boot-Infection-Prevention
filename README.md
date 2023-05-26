@@ -16,6 +16,7 @@
   - Currently, data is accessed via RESTful repositories BUT Spring Boot makes using GraphQL very easy so the two options 
   may coexist giving me the opportunity to judge GraphQL from a mobile app rather than a Javascript frontend
     - HealthPractice and Precaution now include each other's full data without causing endlessly recursive JSON responses
+    - Endpoints are now case-insensitive i.e. "/api/healthpractices" will return the same JSON response as "/api/healthPractices"
   - Enable OAuth2 authentication as a faster, more secure login method that conveniently suits SPAs and mobile apps.
   - SwaggerUI added to document API endpoints, with help from SpringDoc OpenAPI, which enables Spring Boot 3 support
 
