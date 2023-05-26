@@ -36,7 +36,6 @@ public class ReportControllerTests {
     public void getReportById() throws Exception {
         Report mockReport = ModelFactory.getReport();
         when(reportService.getById("abc")).thenReturn(mockReport);
-        System.out.println(mockReport);
 
         // matchesJson differs from the "strictly" version by ONLY checking the properties you include
         // which means if I used .matchesJson("{ }") for the following query, the test would pass because it found a parent object

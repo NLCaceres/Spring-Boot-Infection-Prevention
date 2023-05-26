@@ -19,11 +19,17 @@ public class PrecautionController {
 
     @GetMapping
     public List<Precaution> getAll() {
-        return precautionService.getAll();
+        List<Precaution> precautionList = precautionService.getAll();
+        precautionList.parallelStream().forEach(Precaution::removeBackReference);
+        return precautionList;
     }
     @GetMapping("/{id}")
     public ResponseEntity<Precaution> getById(@PathVariable String id) {
-        try { return new ResponseEntity<>(precautionService.getById(id), HttpStatus.OK); }
+        try {
+            Precaution precaution = precautionService.getById(id);
+            precaution.removeBackReference();
+            return new ResponseEntity<>(precaution, HttpStatus.OK);
+        }
         catch (Exception error) { return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
     }
 }

@@ -28,6 +28,7 @@ public class HealthPracticeControllerTests {
 
         List<HealthPractice> actualList = healthPracticeController.getAll();
         assertThat(actualList).isEqualTo(mockHealthPracticeList);
+        actualList.forEach(healthPractice -> assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty());
     }
     @Test
     public void findSingleHealthPractice() throws Exception {
@@ -36,6 +37,7 @@ public class HealthPracticeControllerTests {
 
         HealthPractice actualHealthPractice = healthPracticeController.getById("abc").getBody();
         assertThat(actualHealthPractice).isEqualTo(mockHealthPractice);
+        assertThat(actualHealthPractice.getPrecaution().getHealthPractices()).isEmpty();
     }
     @Test
     public void unableToFindHealthPractice() throws Exception {

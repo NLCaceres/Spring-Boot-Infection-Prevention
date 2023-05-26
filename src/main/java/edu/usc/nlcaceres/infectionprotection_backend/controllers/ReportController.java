@@ -19,11 +19,17 @@ public class ReportController {
 
     @GetMapping
     public List<Report> getAll() {
-        return reportService.getAll();
+        List<Report> reportList = reportService.getAll();
+        reportList.parallelStream().forEach(report -> report.getHealthPractice().removeBackReference());
+        return reportList;
     }
     @GetMapping("/{id}")
     public ResponseEntity<Report> getById(@PathVariable String id) {
-        try { return new ResponseEntity<>(reportService.getById(id), HttpStatus.OK); }
+        try {
+            Report report = reportService.getById(id);
+            report.getHealthPractice().removeBackReference();
+            return new ResponseEntity<>(report, HttpStatus.OK);
+        }
         catch (Exception error) { return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
     }
 }

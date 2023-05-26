@@ -15,6 +15,7 @@
       - Spring Data Cassandra + Astra Spring Boot help but overcoming the data relationship issue requires careful data duplication or denormalizing
   - Currently, data is accessed via RESTful repositories BUT Spring Boot makes using GraphQL very easy so the two options 
   may coexist giving me the opportunity to judge GraphQL from a mobile app rather than a Javascript frontend
+    - HealthPractice and Precaution now include each other's full data without causing endlessly recursive JSON responses
   - Enable OAuth2 authentication as a faster, more secure login method that conveniently suits SPAs and mobile apps.
   - SwaggerUI added to document API endpoints, with help from SpringDoc OpenAPI, which enables Spring Boot 3 support
 
@@ -29,6 +30,9 @@
         which means MongoDB won't save a list of IDs, only the supervisor ID. From there it can use the supervisor ID to find every
         employee of the supervisor when we want a List<Employee>. While a potential performance hit, it DOES save space in the DB
         and it could even make using Apache Cassandra more feasible. [See this blog](https://spring.io/blog/2021/11/29/spring-data-mongodb-relation-modelling)
+  - Configure the JacksonMapper's Serializer to simplify cases where One-to-Many relationships can cause endless recursion
+    - Current solution happens at the Controller level, iterating over lists to remove each backReference before Jackson causes
+    the recursion. It's more of an issue for GetAll endpoints rather than getById endpoints.
   - Email notifications sent to supervisors if employee is reported
   - MongoDB can handle simple images fairly well but 5gb data limitation may be pretty significant compared to AWS or Cassandra
 

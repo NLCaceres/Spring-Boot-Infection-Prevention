@@ -28,6 +28,10 @@ public class PrecautionControllerTests {
 
         List<Precaution> actualList = precautionController.getAll();
         assertThat(actualList).isEqualTo(mockPrecautionList);
+        actualList.forEach(precaution ->
+                precaution.getHealthPractices().forEach(healthPractice ->
+                        assertThat(healthPractice.getPrecaution()).isNull())
+        );
     }
     @Test
     public void findSinglePrecaution() throws Exception {
@@ -36,6 +40,9 @@ public class PrecautionControllerTests {
 
         Precaution actualPrecaution = precautionController.getById("abc").getBody();
         assertThat(actualPrecaution).isEqualTo(mockPrecaution);
+        actualPrecaution.getHealthPractices().forEach(healthPractice ->
+                assertThat(healthPractice.getPrecaution()).isNull()
+        );
     }
     @Test
     public void unableToFindPrecaution() throws Exception {
