@@ -16,6 +16,7 @@
   - Currently, data is accessed via RESTful repositories BUT Spring Boot makes using GraphQL very easy so the two options 
   may coexist giving me the opportunity to judge GraphQL from a mobile app rather than a Javascript frontend
   - Enable OAuth2 authentication as a faster, more secure login method that conveniently suits SPAs and mobile apps.
+  - SwaggerUI added to document API endpoints, with help from SpringDoc OpenAPI, which enables Spring Boot 3 support
 
 ### Future Considerations
   - The Employee data model likely needs a belongsTo relationship to account for linking supervisors to their employees BUT how to handle it?
