@@ -1,9 +1,7 @@
 package edu.usc.nlcaceres.infectionprotection_backend.models;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -15,11 +13,12 @@ import java.util.ArrayList;
 @Document(collection = "healthpractices") // JsonIdentityInfo is one way to limit recursion BUT isn't perfect in One-to-Many relationships
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class HealthPractice {
-    @Id @NonNull private String id;
-    @NonNull private String name;
+    @JsonView({ JsonViews.Public.class, Precaution.PublicJsonView.class }) @Id @NonNull private String id;
+    @JsonView({ JsonViews.Public.class, Precaution.PublicJsonView.class }) @NonNull private String name;
     // HealthPractice accessed via a parent Precaution should set this Precaution ref to null to avoid cyclic references
     @ToString.Exclude // Excluding this property from Lombok's generated toString should prevent overflows
-    @DocumentReference(lazy = true) private Precaution precaution; // Lazy isn't enough if Jackson or toString recursively loads this ref in
+    @DocumentReference(lazy = true) @JsonView(JsonViews.Public.class)
+    private Precaution precaution; // Lazy isn't enough if Jackson or toString recursively loads this ref in
 
     public void removeBackReference() {
         getPrecaution().setHealthPractices(new ArrayList<>());
