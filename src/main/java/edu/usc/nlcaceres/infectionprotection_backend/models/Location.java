@@ -1,5 +1,6 @@
 package edu.usc.nlcaceres.infectionprotection_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data @RequiredArgsConstructor(staticName = "of")
-@Document(collection = "locations")
+@Document(collection = "locations") @JsonView(JsonViews.Public.class)
 public class Location {
     @Id @NonNull private String id;
     @NonNull private String facilityName; // TODO: Convert Location field names in db from camelCase to snake_case

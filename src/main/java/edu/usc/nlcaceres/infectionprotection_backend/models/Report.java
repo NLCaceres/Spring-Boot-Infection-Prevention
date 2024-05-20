@@ -1,5 +1,6 @@
 package edu.usc.nlcaceres.infectionprotection_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.time.Instant;
 
 @Data @RequiredArgsConstructor(staticName = "of")
-@Document(collection = "reports")
+@Document(collection = "reports") @JsonView(JsonViews.Public.class)
 public class Report {
     @Id @NonNull private String id;
     @DocumentReference @NonNull private Employee employee;
