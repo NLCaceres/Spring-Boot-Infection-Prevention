@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import java.util.ArrayList;
 
 // Could also add a @JsonInclude(Include.NON_NULL) to ensure null values never get sent to MongoDb
 @Data // Since each HealthPractice has a ref to its parent Precaution, and vice versa, the generated toString can cause Stack Overflows
@@ -19,8 +18,4 @@ public class HealthPractice {
     @ToString.Exclude // Excluding this property from Lombok's generated toString should prevent overflows
     @DocumentReference(lazy = true) @JsonView(JsonViews.Public.class)
     private Precaution precaution; // Lazy isn't enough if Jackson or toString recursively loads this ref in
-
-    public void removeBackReference() {
-        getPrecaution().setHealthPractices(new ArrayList<>());
-    }
 }

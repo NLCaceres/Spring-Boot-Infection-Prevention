@@ -11,9 +11,5 @@ public class HealthPracticeTests {
         assertThat(healthPractice.getName()).isEqualTo("Hand Hygiene"); // Sanity check that data is init properly
         assertThat(healthPractice.getPrecaution()).isNotNull();
         assertThat(healthPractice.getPrecaution().getHealthPractices()).isNotEmpty();
-
-        // Grab the parent precaution and set its list of healthPractices to an empty one to prevent cyclic references
-        healthPractice.removeBackReference();
-        assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty();
     }
 }

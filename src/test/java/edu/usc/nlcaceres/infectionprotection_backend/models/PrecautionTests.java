@@ -11,9 +11,5 @@ public class PrecautionTests {
         assertThat(precaution.getName()).isEqualTo("Isolation"); // Sanity Checks that data is init as expected
         assertThat(precaution.getHealthPractices()).isNotEmpty();
         precaution.getHealthPractices().forEach(healthPractice -> assertThat(healthPractice.getPrecaution()).isNotNull());
-
-        // Grab each child healthPractice and set their precaution back reference to null to prevent cycles
-        precaution.removeBackReference();
-        precaution.getHealthPractices().forEach(healthPractice -> assertThat(healthPractice.getPrecaution()).isNull());
     }
 }
