@@ -3,26 +3,33 @@ package edu.usc.nlcaceres.infectionprotection_backend.models;
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
 //* VERY important to check HealthPractice and Precaution equals() and toString() because of their cyclic references */
-//* If used Lombok to generate those two funcs, then those cyclic refs would cause overflows */
 public class PrecautionTests {
     @Test
     public void testEquals() {
         Precaution precaution = ModelFactory.getPrecaution(null);
         Precaution other = Precaution.of("abc", "Foo");
-        //* WHEN only the IDs match, THEN equals() returns false */
+        //* WHEN only the IDs match, THEN the Precautions are NOT equal */
         assertThat(precaution.equals(other)).isFalse();
 
         Precaution another = Precaution.of("abc", "Isolation");
-        //* WHEN the IDs and names match but not the list of health practices (size included), THEN equals() returns false */
+        //* WHEN the IDs and names match but not the list of health practices (size included), THEN  the Precautions are NOT equal */
         assertThat(precaution.equals(another)).isFalse();
 
         Precaution fullMatch = Precaution.of("abc", "Isolation");
-        fullMatch.getHealthPractices().add(HealthPractice.of("abc", "PPE"));
-        fullMatch.getHealthPractices().add(HealthPractice.of("abc", "Hand Hygiene"));
-        //* WHEN all fields match including each HealthPractice's id and name (after sorting), THEN equals() returns true */
+        fullMatch.setHealthPractices(List.of(HealthPractice.of("abc", "Hand Hygiene"), HealthPractice.of("abc", "PPE")));
+        //* WHEN all fields match including the HealthPractice's BUT not the Precaution back-ref, THEN the Precautions are NOT equal */
+        assertThat(precaution.equals(fullMatch)).isFalse();
+
+        //* WHEN all fields match + the HealthPractice and its back-ref to the Precaution (specifically the ID and name), THEN Precautions are equal */
+        fullMatch.getHealthPractices().forEach(healthPractice -> healthPractice.setPrecaution(Precaution.of("abc", "Standard")));
         assertThat(precaution.equals(fullMatch)).isTrue();
+
+        //* Order matters for Lists. Even if the HealthPractices are identical, incorrect order will cause equals to return false */
+        fullMatch.setHealthPractices(List.of(HealthPractice.of("abc", "PPE"), HealthPractice.of("abc", "Hand Hygiene")));
+        assertThat(precaution.equals(fullMatch)).isFalse();
     }
     @Test
     public void testToString() {
