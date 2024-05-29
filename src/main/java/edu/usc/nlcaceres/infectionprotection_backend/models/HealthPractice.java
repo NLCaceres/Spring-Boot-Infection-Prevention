@@ -15,13 +15,7 @@ import lombok.Setter;
 //? BUT isn't great with 1-Many Relationships, so there's also @JsonInclude(Include.NON_NULL) to prevent null values from being sent to MongoDB
 @Document(collection = "healthpractices") @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class HealthPractice {
-    //? @AllArgsConstructor basically creates the following (just without the this() delegation and explicit use of setter)
-    // public HealthPractice(String id, String name, @Nullable Precaution precaution) {
-    //     //? Delegate to a Lombok RequiredArgsConstructor-style constructor, enforcing @NonNull fields/props, throwing a NullPointerException if needed
-    //     this(id, name);
-    //     //* THEN just set the precaution of the newly made HealthPractice */
-    //     this.setPrecaution(precaution);
-    // }
+
     public static HealthPractice of(String id, String name) {
         return new HealthPractice(id, name, null);
     }
