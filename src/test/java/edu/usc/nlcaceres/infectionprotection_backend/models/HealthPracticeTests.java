@@ -18,7 +18,7 @@ public class HealthPracticeTests {
         //* WHEN the other healthPractice only matches in ID and name but not precaution, THEN equals returns false */
         assertThat(healthPractice.equals(another)).isFalse();
         
-        HealthPractice fullMatch = new HealthPractice("abc", "Hand Hygiene", Precaution.of("cba", "Standard"));
+        HealthPractice fullMatch = new HealthPractice("abc", "Hand Hygiene", Precaution.of("abc", "Standard"));
         //* WHEN the other healthPractice fully matches (including the Precaution id and name), THEN equals returns true */
         assertThat(healthPractice.equals(fullMatch)).isTrue();
     }
