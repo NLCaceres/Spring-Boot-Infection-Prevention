@@ -16,9 +16,9 @@ public class ModelFactory {
     // Get a "Hand Hygiene" Health Practice with id "abc" OR with a name of your choice
     public static HealthPractice getHealthPractice(String name) {
         String finalName = name != null ? name : "Hand Hygiene";
-        HealthPractice healthPractice = new HealthPractice("abc", finalName);
+        HealthPractice healthPractice = HealthPractice.of("abc", finalName);
         // Can't use ModelFactory.getPrecaution() w/out causing a StackOverflow as it calls this func, so on and so forth
-        Precaution precaution = new Precaution("cba", "Standard"); // So best to handle it the long way
+        Precaution precaution = Precaution.of("abc", "Standard"); // So best to handle it the long way
         precaution.setHealthPractices(List.of(healthPractice));
         healthPractice.setPrecaution(precaution);
 
@@ -34,7 +34,7 @@ public class ModelFactory {
     // Get an "Isolation" precaution with id "abc" OR with a name of your choice
     public static Precaution getPrecaution(String name) {
         String finalName = name != null ? name : "Isolation";
-        Precaution precaution = new Precaution("abc", finalName);
+        Precaution precaution = Precaution.of("abc", finalName);
         // Okay to call getHealthPractice here since it won't be calling getPrecaution and won't cause a recursive cycle
         precaution.setHealthPractices(List.of(getHealthPractice(null), getHealthPractice("PPE")));
         return precaution;
