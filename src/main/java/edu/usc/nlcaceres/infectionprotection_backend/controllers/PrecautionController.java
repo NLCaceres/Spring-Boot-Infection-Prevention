@@ -1,5 +1,6 @@
 package edu.usc.nlcaceres.infectionprotection_backend.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Precaution;
 import edu.usc.nlcaceres.infectionprotection_backend.services.PrecautionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,14 @@ public class PrecautionController {
     @Autowired
     private PrecautionService precautionService;
 
-    @GetMapping
+    @GetMapping @JsonView(Precaution.PublicJsonView.class)
     public List<Precaution> getAll() {
-        List<Precaution> precautionList = precautionService.getAll();
-        precautionList.parallelStream().forEach(Precaution::removeBackReference);
-        return precautionList;
+        return precautionService.getAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") @JsonView(Precaution.PublicJsonView.class)
     public ResponseEntity<Precaution> getById(@PathVariable String id) {
         try {
             Precaution precaution = precautionService.getById(id);
-            precaution.removeBackReference();
             return new ResponseEntity<>(precaution, HttpStatus.OK);
         }
         catch (Exception error) { return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
