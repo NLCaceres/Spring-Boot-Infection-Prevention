@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.aot.DisabledInAotMode;
-
 import java.util.List;
+import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +31,13 @@ public class HealthPracticeControllerTests {
 
         List<HealthPractice> actualList = healthPracticeController.getAll();
         assertThat(actualList).isEqualTo(mockHealthPracticeList);
-        actualList.forEach(healthPractice -> assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty());
+        IntStream.range(0, actualList.size()).forEach(index -> {
+            HealthPractice healthPractice = actualList.get(index);
+            assertThat(healthPractice.getPrecaution().getHealthPractices()).hasSize(1);
+
+            HealthPractice mockHealthPractice = mockHealthPracticeList.get(index);
+            assertThat(healthPractice.getPrecaution().getHealthPractices()).isEqualTo(mockHealthPractice.getPrecaution().getHealthPractices());
+        });
     }
     @Test
     public void findSingleHealthPractice() throws Exception {
@@ -40,7 +46,10 @@ public class HealthPracticeControllerTests {
 
         HealthPractice actualHealthPractice = healthPracticeController.getById("abc").getBody();
         assertThat(actualHealthPractice).isEqualTo(mockHealthPractice);
-        assertThat(actualHealthPractice.getPrecaution().getHealthPractices()).isEmpty();
+
+        assertThat(actualHealthPractice.getPrecaution().getHealthPractices()).hasSize(1);
+
+        assertThat(actualHealthPractice.getPrecaution().getHealthPractices()).isEqualTo(mockHealthPractice.getPrecaution().getHealthPractices());
     }
     @Test
     public void unableToFindHealthPractice() throws Exception {
