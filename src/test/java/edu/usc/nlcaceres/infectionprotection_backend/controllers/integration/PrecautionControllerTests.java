@@ -33,6 +33,10 @@ public class PrecautionControllerTests {
 
         List<Precaution> actualList = Arrays.asList(mapper.readValue(jsonResponse, Precaution[].class));
         assertThat(actualList).hasSize(2);
+        // Backrefs to the original Precautions are now null since the Response does not include a backref in the HealthPractice key
+        actualList.forEach(precaution -> {
+            precaution.getHealthPractices().forEach(healthPractice -> assertThat(healthPractice.getPrecaution()).isNull());
+        });
     }
     @Test
     public void findSinglePrecaution() throws Exception {
@@ -42,6 +46,8 @@ public class PrecautionControllerTests {
 
         Precaution precaution = mapper.readValue(jsonResponse, Precaution.class);
         assertThat(precaution.getName()).isEqualTo("Isolation");
+        // Backrefs to the original Precaution are now null since the Response does not include a backref in the HealthPractice key
+        precaution.getHealthPractices().forEach(healthPractice -> assertThat(healthPractice.getPrecaution()).isNull());
     }
     @Test
     public void unableToFindPrecaution() throws Exception {

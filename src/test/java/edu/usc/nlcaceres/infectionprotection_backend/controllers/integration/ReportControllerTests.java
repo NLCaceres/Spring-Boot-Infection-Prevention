@@ -33,6 +33,8 @@ public class ReportControllerTests {
 
         List<Report> actualList = Arrays.asList(mapper.readValue(jsonResponse, Report[].class));
         assertThat(actualList).hasSize(5);
+        // Backrefs to the Report's HealthPractice are now null (since not included in the Response JSON)
+        actualList.forEach(report -> assertThat(report.getHealthPractice().getPrecaution().getHealthPractices()).isEmpty());
     }
     @Test
     public void findSingleReport() throws Exception {
@@ -50,6 +52,8 @@ public class ReportControllerTests {
         assertThat(report.getLocation().getRoomNum()).isEqualTo("123");
 
         assertThat(report.getHealthPractice().getName()).isEqualTo("Hand Hygiene");
+        // Backrefs to the Report's HealthPractice are now null (since not included in the Response JSON)
+        assertThat(report.getHealthPractice().getPrecaution().getHealthPractices()).isEmpty();
     }
     @Test
     public void unableToFindReport() throws Exception {

@@ -33,6 +33,7 @@ public class HealthPracticeControllerTests {
 
         List<HealthPractice> actualList = Arrays.asList(mapper.readValue(jsonResponse, HealthPractice[].class));
         assertThat(actualList).hasSize(6);
+        actualList.forEach(healthPractice -> assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty());
     }
     @Test
     public void findSingleHealthPractice() throws Exception {
@@ -42,6 +43,7 @@ public class HealthPracticeControllerTests {
 
         HealthPractice healthPractice = mapper.readValue(jsonResponse, HealthPractice.class);
         assertThat(healthPractice.getName()).isEqualTo("Hand Hygiene");
+        assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty();
     }
     @Test
     public void unableToFindHealthPractice() throws Exception {
