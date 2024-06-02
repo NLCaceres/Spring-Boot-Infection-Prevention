@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.aot.DisabledInAotMode;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -49,7 +48,7 @@ public class PrecautionServiceTest {
     @Test
     public void unableToFindPrecaution() throws Exception {
         assertThrows(NoSuchElementException.class, () -> {
-            Precaution precaution = precautionService.getById("abc");
+            precautionService.getById("abc");
         });
     }
 }
