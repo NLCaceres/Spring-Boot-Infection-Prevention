@@ -9,16 +9,21 @@ import com.mongodb.ReadConcern;
 import com.mongodb.ReadPreference;
 import com.mongodb.TransactionOptions;
 import com.mongodb.WriteConcern;
-import io.mongock.driver.api.driver.ConnectionDriver;
+import io.mongock.driver.mongodb.springdata.v4.SpringDataMongoV4Driver;
 import io.mongock.runner.springboot.MongockSpringboot;
 import io.mongock.runner.springboot.base.MongockInitializingBeanRunner;
 
 @Configuration
 public class MongockConfig {
 
+  @Bean // ?: Need a ConnectionDriver if not using @EnableMongock in the main App file
+  public SpringDataMongoV4Driver mongockDriver(MongoTemplate mongoTemplate) {
+    return SpringDataMongoV4Driver.withDefaultLock(mongoTemplate); // ?: TransactionEnabled by default now!
+  }
+
   // ?: This Bean lets me combine `application.properties`/`properties.yaml` with this Builder's config
   @Bean // ?: Alternatively, if no `application.properties` needed, I could use the MongockApplicationRunner Bean
-  public MongockInitializingBeanRunner mongockRunner(ConnectionDriver driver, ApplicationContext context) {
+  public MongockInitializingBeanRunner mongockRunner(SpringDataMongoV4Driver driver, ApplicationContext context) {
     return MongockSpringboot.builder()
       .setDriver(driver).setSpringContext(context).setDefaultAuthor("NLCaceres")
       .addMigrationScanPackage("edu.usc.nlcaceres.infectionprotection_backend.migrations")
