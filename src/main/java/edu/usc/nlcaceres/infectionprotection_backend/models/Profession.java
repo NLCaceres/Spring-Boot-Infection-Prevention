@@ -19,6 +19,13 @@ public class Profession {
     public static Profession of(String id, String observedOccupation, String serviceDiscipline) {
         return new Profession(id, observedOccupation, serviceDiscipline);
     }
+    // ?: Need an obj init with a null ID (empty string doesn't work), otherwise MongoDB won't auto-generate an ID
+    public static Profession of(String observedOccupation, String serviceDiscipline) {
+        Profession profession = new Profession();
+        profession.setObservedOccupation(observedOccupation);
+        profession.setServiceDiscipline(serviceDiscipline);
+        return profession;
+    }
 
     @NonNull @Id private String id;
 
