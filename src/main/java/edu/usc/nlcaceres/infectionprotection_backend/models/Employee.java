@@ -26,6 +26,13 @@ public class Employee {
     public static Employee of(String id, String firstName, String surname, Profession profession) {
         return new Employee(id, firstName, surname, profession);
     }
+    public static Employee of(String firstName, String surname, Profession profession) {
+        Employee employee = new Employee();
+        employee.setFirstName(firstName);
+        employee.setSurname(surname);
+        employee.setProfession(profession);
+        return employee;
+    }
 
     @NonNull @Id private String id;
 

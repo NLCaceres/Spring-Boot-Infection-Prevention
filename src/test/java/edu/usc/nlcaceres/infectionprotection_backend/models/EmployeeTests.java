@@ -5,6 +5,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeTests {
     @Test
+    public void testStaticFactory() {
+        Profession profession = Profession.of("Barfoo", "Foobar");
+        // - WHEN 4 params are set in the static factory method
+        Employee employee = Employee.of("123", "Foo", "Bar", profession);
+        // - THEN all 4 fields of Employee are correctly set
+        assertThat(employee.getId()).isEqualTo("123");
+        assertThat(employee.getFirstName()).isEqualTo("Foo");
+        assertThat(employee.getSurname()).isEqualTo("Bar");
+        assertThat(employee.getProfession()).isEqualTo(Profession.of("Barfoo", "Foobar"));
+
+        // - WHEN only 3 params are set in the static factory method
+        Employee employeeWithNullID = Employee.of("Fizz", "Buzz", profession);
+        // - THEN the ID field is set to null, despite @NonNull
+        assertThat(employeeWithNullID.getId()).isNull();
+        // - BUT the other main fields are set correctly
+        assertThat(employeeWithNullID.getFirstName()).isEqualTo("Fizz");
+        assertThat(employeeWithNullID.getSurname()).isEqualTo("Buzz");
+        assertThat(employeeWithNullID.getProfession()).isEqualTo(Profession.of("Barfoo", "Foobar"));
+    }
+    @Test
     public void testLombokEquals() {
         Profession profession = Profession.of("Foo", "Bar", "Fizz");
         Employee employee = Employee.of("Foo", "Bar", "Fizz", profession);
