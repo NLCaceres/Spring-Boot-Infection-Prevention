@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfessionRepository extends MongoRepository<Profession, String> {
+  Profession findFirstProfessionDistinctByObservedOccupationAndServiceDiscipline(String observedOccupation, String serviceDiscipline);
 }
