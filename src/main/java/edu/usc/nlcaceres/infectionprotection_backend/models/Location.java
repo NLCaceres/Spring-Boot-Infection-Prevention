@@ -2,6 +2,7 @@ package edu.usc.nlcaceres.infectionprotection_backend.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,9 +32,9 @@ public class Location {
     // - Why change field names to snake_case? It is common convention in SQL based databases even if MongoDB seems to prefer
     // - the camelCase style due to its Javascript roots. If I switch to SQL style snake_case though, migration would be simpler
     // - Overall MongoDB doesn't really seem to care BUT SQL databases DO CARE so easiest to fall in line with the SQL convention
-    @NonNull private String facilityName; // TODO: Use Mongock to create a MongoDB update script and convert the camelCase field names to snake_case
+    @NonNull @Field("facility_name") private String facilityName;
 
-    @NonNull private String unitNum;
+    @NonNull @Field("unit_num") private String unitNum;
 
-    @NonNull private String roomNum;
+    @NonNull @Field("room_num") private String roomNum;
 }
