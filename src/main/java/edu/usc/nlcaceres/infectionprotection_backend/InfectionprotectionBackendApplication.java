@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // ?: @Configuration declares this class the source of 'bean' definitions for the app context
 // ?: While @EnableAutoConfig starts adding those beans on the classpath as well as property settings to activate related behavior
 // ?: @ComponentScan searches all files at the same level as this Application class and any subpackages
-@SpringBootApplication
+@SpringBootApplication(excludeName = { "de.flapdoodle.embed.mongo.spring.autoconfigure.EmbeddedMongoAutoConfiguration" })
 public class InfectionprotectionBackendApplication implements CommandLineRunner {
 
   public static void main(String[] args) {
