@@ -20,13 +20,24 @@ import lombok.Setter;
 @Document(collection = "precautions") @AllArgsConstructor @Getter @Setter @EqualsAndHashCode
 public class Precaution {
 
-    public Precaution() {
+    public Precaution() { // ?: Using NoArgsConstructor sets healthPractices null BUT I'd prefer an empty list
         this.id = null;
         this.name = null;
         this.healthPractices = new ArrayList<>();
     }
     public static Precaution of(String id, String name) {
         return new Precaution(id, name, new ArrayList<>());
+    }
+    public static Precaution of(String name) {
+        Precaution precaution = new Precaution();
+        precaution.setName(name);
+        return precaution;
+    }
+    public static Precaution of(String name, List<HealthPractice> healthPractices) {
+        Precaution precaution = new Precaution();
+        precaution.setName(name);
+        precaution.setHealthPractices(healthPractices);
+        return precaution;
     }
 
     @JsonView({ JsonViews.Public.class, PublicJsonView.class }) @NonNull @Id private String id;

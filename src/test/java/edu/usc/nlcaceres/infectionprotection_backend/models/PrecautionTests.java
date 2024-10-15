@@ -3,10 +3,36 @@ package edu.usc.nlcaceres.infectionprotection_backend.models;
 import edu.usc.nlcaceres.infectionprotection_backend.ModelFactory;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
 import java.util.List;
 
 //* VERY important to check HealthPractice and Precaution equals() and toString() because of their cyclic references */
 public class PrecautionTests {
+    @Test
+    public void testStaticFactory() {
+        // - WHEN 1 param is set in the static factory method
+        Precaution precaution = Precaution.of("Foo");
+        // - THEN the Precaution ID is null, but its name is set to the param value with an empty HealthPractice list
+        assertThat(precaution.getId()).isEqualTo(null);
+        assertThat(precaution.getName()).isEqualTo("Foo");
+        assertThat(precaution.getHealthPractices()).isEqualTo(new ArrayList<>());
+
+        // - WHEN 2 String params are set
+        Precaution anotherPrecaution = Precaution.of("123", "Bar");
+        // - THEN the Precaution ID AND name are set respectively, but with an empty HealthPractice list still
+        assertThat(anotherPrecaution.getId()).isEqualTo("123");
+        assertThat(anotherPrecaution.getName()).isEqualTo("Bar");
+        assertThat(anotherPrecaution.getHealthPractices()).isEqualTo(new ArrayList<>());
+
+        // - WHEN 2 params are set but 1 is a list
+        Precaution finalPrecaution = Precaution.of("Fizz", List.of(HealthPractice.of("321", "Buzz")));
+        // - THEN the Precaution ID is null, but name AND list are BOTH set respectively
+        assertThat(finalPrecaution.getId()).isEqualTo(null);
+        assertThat(finalPrecaution.getName()).isEqualTo("Fizz");
+        assertThat(finalPrecaution.getHealthPractices().size()).isEqualTo(1);
+        assertThat(finalPrecaution.getHealthPractices().get(0).getId()).isEqualTo("321");
+        assertThat(finalPrecaution.getHealthPractices().get(0).getName()).isEqualTo("Buzz");
+    }
     @Test
     public void testEquals() {
         Precaution precaution = ModelFactory.getPrecaution(null);
