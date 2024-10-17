@@ -19,6 +19,12 @@ public class HealthPractice {
     public static HealthPractice of(String id, String name) {
         return new HealthPractice(id, name, null);
     }
+    public static HealthPractice of(String name, Precaution precaution) {
+        HealthPractice healthPractice = new HealthPractice();
+        healthPractice.setName(name);
+        healthPractice.setPrecaution(precaution);
+        return healthPractice;
+    }
 
     @JsonView({ JsonViews.Public.class, Precaution.PublicJsonView.class }) @NonNull @Id private String id;
 

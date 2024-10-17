@@ -8,6 +8,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 //* If used Lombok to generate those two funcs, then those cyclic refs would cause overflows */
 public class HealthPracticeTests {
     @Test
+    public void testStaticFactory() {
+        // - WHEN 2 String params are set in the static factory method
+        HealthPractice healthPractice = HealthPractice.of("123", "Foo");
+        // - THEN ID and name are set respectively, BUT the Precaution field is null
+        assertThat(healthPractice.getId()).isEqualTo("123");
+        assertThat(healthPractice.getName()).isEqualTo("Foo");
+        assertThat(healthPractice.getPrecaution()).isNull();
+
+        // - WHEN a String param and Precaution param are set
+        HealthPractice anotherHealthPractice = HealthPractice.of("Bar", Precaution.of("Fizz"));
+        // - THEN the ID is null, while the name field and Precaution field are correctly set
+        assertThat(anotherHealthPractice.getId()).isNull();
+        assertThat(anotherHealthPractice.getName()).isEqualTo("Bar");
+        assertThat(anotherHealthPractice.getPrecaution()).isNotNull();
+        assertThat(anotherHealthPractice.getPrecaution().getName()).isEqualTo("Fizz");
+    }
+    @Test
     public void testEquals() {
         HealthPractice healthPractice = ModelFactory.getHealthPractice(null);
         HealthPractice other = new HealthPractice("abc", "Foo", Precaution.of("def", "Standard"));
