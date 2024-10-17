@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import edu.usc.nlcaceres.infectionprotection_backend.models.Profession;
 
-@DataMongoTest
+@DataMongoTest(properties = "de.flapdoodle.mongodb.embedded.version=7.0.12")
 public class ProfessionRepositoryTests {
   @Autowired
   ProfessionRepository professionRepository;
