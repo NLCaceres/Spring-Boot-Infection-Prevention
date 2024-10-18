@@ -13,7 +13,7 @@ import lombok.Setter;
 
 //? To limit recursion, there's @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //? BUT isn't great with 1-Many Relationships, so there's also @JsonInclude(Include.NON_NULL) to prevent null values from being sent to MongoDB
-@Document(collection = "healthpractices") @AllArgsConstructor @NoArgsConstructor @Getter @Setter
+@Document(collection = "health_practices") @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class HealthPractice {
 
     public static HealthPractice of(String id, String name) {
