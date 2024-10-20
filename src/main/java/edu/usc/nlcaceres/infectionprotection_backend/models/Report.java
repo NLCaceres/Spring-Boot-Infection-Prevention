@@ -21,6 +21,14 @@ public class Report {
     public static Report of(String id, Employee employee, HealthPractice healthPractice, Location location, Instant date) {
         return new Report(id, employee, healthPractice, location, date);
     }
+    public static Report of(Employee employee, HealthPractice healthPractice, Location location, Instant date) {
+        Report report = new Report();
+        report.setEmployee(employee);
+        report.setHealthPractice(healthPractice);
+        report.setLocation(location);
+        report.setDate(date);
+        return report;
+    }
 
     @NonNull @Id private String id;
 
