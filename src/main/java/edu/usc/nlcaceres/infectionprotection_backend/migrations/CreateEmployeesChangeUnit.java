@@ -27,12 +27,11 @@ public class CreateEmployeesChangeUnit {
 
   @Execution
   public void execution(EmployeeRepository employeeRepository, ProfessionRepository professionRepository) {
-    Profession doctor = professionRepository
-      .findFirstProfessionDistinctByObservedOccupationAndServiceDiscipline("Clinic", "Doctor");
-    Profession nurse = professionRepository
-      .findFirstProfessionDistinctByObservedOccupationAndServiceDiscipline("Clinic", "Nurse");
-
     if (employeeRepository.count() == 0) {
+      Profession nurse = professionRepository
+        .findFirstProfessionDistinctByObservedOccupationAndServiceDiscipline("Clinic", "Nurse");
+      Profession doctor = professionRepository
+        .findFirstProfessionDistinctByObservedOccupationAndServiceDiscipline("Clinic", "Doctor");
       employeeRepository.saveAll(List.of(
         Employee.of("John", "Smith", nurse),
         Employee.of("Jill", "Chambers", nurse),
