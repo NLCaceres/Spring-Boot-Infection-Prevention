@@ -34,8 +34,7 @@ public class Report {
 
     @NonNull @DocumentReference private Employee employee;
 
-    // TODO: Convert field from "healthPractice" to "health_practice" (see Location.java for details)
-    @NonNull @DocumentReference private HealthPractice healthPractice;
+    @NonNull @Field("health_practice") @DocumentReference private HealthPractice healthPractice;
 
     @NonNull @DocumentReference private Location location;
 
