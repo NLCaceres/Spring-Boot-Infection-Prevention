@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 // On the other hand, @RepositoryRestResource would set the collection name and endpoint path which is done in the Models and Controllers instead
 @Repository
 public interface EmployeeRepository extends MongoRepository<Employee, String> { // <Employee Document, ID String>
-
+  public Employee findByFirstNameAndSurname(String firstName, String surname);
 }
