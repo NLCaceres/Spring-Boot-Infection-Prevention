@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LocationRepository extends MongoRepository<Location, String> {
+  public Location findByFacilityNameAndUnitNumAndRoomNum(String facilityName, String unitNum, String roomNum);
 }
