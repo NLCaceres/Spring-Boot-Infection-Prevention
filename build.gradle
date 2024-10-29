@@ -48,6 +48,13 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+graalvmNative {
+	binaries {
+		main {
+			buildArgs(['--static', '--libc=musl', '-march=compatibility'])
+		}
+	}
+}
 
 hibernate {
 	enhancement {
