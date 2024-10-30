@@ -1,12 +1,10 @@
-FROM NLCaceres/infectionprotection_backend AS builder
+FROM NLCaceres/infection_protection_backend_musl AS builder
 
-FROM debian:stable-slim
-# Following is probably best for a "--static --libc=musl" build
-# FROM alpine:3
-# Following is probably best for a "--static" build (since it'll completely statically link via glibc as the libc implementation)
+FROM alpine:3
+# If using a basic "--static" build with a glibc libc implementation, the following probably works
 # FROM frolvlad/alpine-glibc:alpine-3
 EXPOSE 8080
 
 COPY --from=builder --chmod=0755 /app/src/build/native/nativeCompile/infectionprotection_backend /app/infectionprotection_backend
 
-ENTRYPOINT ["./app/infectionprotection_backend"]
+ENTRYPOINT ["/app/infectionprotection_backend"]
