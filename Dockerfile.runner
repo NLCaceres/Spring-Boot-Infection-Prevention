@@ -2,10 +2,11 @@ FROM NLCaceres/infection_protection_backend_musl AS builder
 
 RUN mkdir new_tmp
 
-FROM scratch
+# A lot of the benefits of `scratch` BUT I can debug and be certain more easily
+FROM alpine:3
 EXPOSE 8080
 
+USER 1001
 COPY --from=builder --chmod=0755 /app/src/build/native/nativeCompile/infectionprotection_backend /app/infectionprotection_backend
 COPY --from=builder --chmod=1777 /app/src/new_tmp /tmp
-
 ENTRYPOINT ["/app/infectionprotection_backend"]
