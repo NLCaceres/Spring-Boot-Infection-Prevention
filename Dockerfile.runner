@@ -1,4 +1,4 @@
-FROM NLCaceres/infection_protection_backend_musl AS builder
+FROM NLCaceres/infection_protection_native_backend AS builder
 
 RUN mkdir new_tmp
 

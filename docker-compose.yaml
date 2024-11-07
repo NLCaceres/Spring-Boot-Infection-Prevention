@@ -2,9 +2,9 @@ name: infectionprotection
 
 services:
   app:
-    image: NLCaceres/infectionprotection_app
+    image: NLCaceres/infection_protection_backend_host
     pull_policy: never
-    container_name: infectionprotection
+    container_name: infection_protection_app
     build:
       dockerfile: Dockerfile.runner
     ports:
