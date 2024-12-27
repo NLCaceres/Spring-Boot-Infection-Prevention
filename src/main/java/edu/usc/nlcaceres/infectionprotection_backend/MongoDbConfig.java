@@ -31,7 +31,7 @@ public class MongoDbConfig {
         return isDevMode() ? "example" : env.getProperty("MONGO_PASSWORD", "");
     }
     private String getMongoHost() {
-        return isDevMode() ? "localhost:27017" : env.getProperty("MONGO_HOST", "");
+        return isDevMode() ? "mongodb:27017" : env.getProperty("MONGO_HOST", "");
     }
     private String mongoURI() {
         // * Using StringBuilder to make the following String:
