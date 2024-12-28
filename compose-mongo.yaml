@@ -1,0 +1,17 @@
+name: mongo-server
+
+# - Launches a Mongo instance for the Spring-Boot app to serve
+services:
+# ?: The service name decides the host name in the docker network to access it by url so
+  mongodb: # ?: `mongodb://mongodb:27017/` vs naming it `mongo` to get `mongodb://mongo:27017`
+    image: mongo:7.0.12-jammy
+    container_name: mongodb
+    ports: # ?: The Port value is delim by ":". Left for HOST-visible port, right to other services
+      - "127.0.0.1:27017:27017"
+    volumes: # ?: Volumes also use ":" for HOST-visible DB name vs Service-visible name
+      - mongodb-data:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+volumes: # ?: Volumes get created on `docker compose up` IF not already made
+  mongodb-data:
