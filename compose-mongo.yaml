@@ -13,5 +13,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
+    healthcheck: # ?: Auto-selects the test DB of this Mongo service and "pings" it
+      test: mongosh --quiet --port 27017 --eval 'db.runCommand("ping").ok'
 volumes: # ?: Volumes get created on `docker compose up` IF not already made
   mongodb-data:
