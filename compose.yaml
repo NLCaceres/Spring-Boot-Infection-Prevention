@@ -19,3 +19,8 @@ services:
     depends_on: # ?: Expands to set `restart: false, condition: service_started, required: true`
       mongodb:
         condition: service_healthy
+    networks:
+      - main
+
+networks:
+  main:
