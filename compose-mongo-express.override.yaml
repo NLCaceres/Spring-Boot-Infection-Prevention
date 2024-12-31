@@ -1,0 +1,19 @@
+name: infection_protection_app
+
+include:
+  - compose-mongo.yaml
+
+services:
+  mongo-express:
+    networks: !reset []
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+networks: !reset []
+
+volumes:
+  infection_protection_app_mongodb-data:
+    external: true
+  infection_protection_app_mongodb-config:
+    external: true
