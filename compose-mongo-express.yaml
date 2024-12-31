@@ -1,7 +1,5 @@
 name: mongo-express
 
-include:
-  - compose-mongo.yaml
 # - Provides a GUI for a local Mongo instance
 services:
   mongo-express:
@@ -16,6 +14,9 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb
       - ME_CONFIG_BASICAUTH=false
       # - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/
-    depends_on:
-      mongodb:
-        condition: service_healthy
+    networks:
+      - infection_protection_app_main
+
+networks:
+  infection_protection_app_main:
+    external: true
