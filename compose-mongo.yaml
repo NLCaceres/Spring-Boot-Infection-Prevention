@@ -9,11 +9,14 @@ services:
     ports: # ?: The Port value is delim by ":". Left for HOST-visible port, right to other services
       - "127.0.0.1:27017:27017"
     volumes: # ?: Volumes also use ":" for HOST-visible DB name vs Service-visible name
-      - mongodb-data:/data
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     healthcheck: # ?: Auto-selects the test DB of this Mongo service and "pings" it
       test: mongosh --quiet --port 27017 --eval 'db.runCommand("ping").ok'
+
 volumes: # ?: Volumes get created on `docker compose up` IF not already made
   mongodb-data:
+  mongodb-config:
