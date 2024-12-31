@@ -1,0 +1,6 @@
+name: mongo-server
+
+services:
+  mongodb:
+    networks:
+      - main
