@@ -1,8 +1,5 @@
-# FROM sapmachine:17-jdk-headless-ubuntu AS builder
 FROM eclipse-temurin:17-jdk-alpine AS builder
 
-# Possibly don't need an extra update/upgrade
-# RUN apt-get update && apt-get upgrade && apt-get clean
 RUN apk upgrade --no-cache && apk cache clean
 
 COPY . /app/src/
@@ -11,25 +8,17 @@ WORKDIR /app/src
 
 RUN ./gradlew bootJar
 
-# Might be able to use `RUN --mount=type=bind` with the bootJar command
-# BUT otherwise the following is the only way to copy/move in container, excluding host
-# Should be `infectionprotection_backend-<version>.jar
-RUN mv build/libs/infectionprotection_backend-0.0.1-SNAPSHOT.jar /app.jar
-
-
-# FROM sapmachine:17-jre-headless-ubuntu
+# RUN STEP
 FROM eclipse-temurin:17-jre-alpine
-# FROM gcr.io/distroless/java17-debian12:latest
 
-# Good for Ubuntu
-# RUN apt-get update && apt-get upgrade && apt-get clean
-# Good for Alpine
 RUN apk upgrade --no-cache && apk cache clean
 
 EXPOSE 8080
 
 USER 1001
 
-COPY --from=builder --chmod=0755 /app.jar /app.jar
+COPY --from=builder --chmod=0755 \
+  /app/src/build/libs/infectionprotection_backend-0.0.1-SNAPSHOT.jar \
+  /app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
