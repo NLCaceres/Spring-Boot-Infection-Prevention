@@ -4,9 +4,8 @@ name: infection_protection_app
 # ?: CLI Commands will ignore the others if `compose.yaml` exists
 
 include:
-  - path:
-    - compose-mongo.yaml
-    - compose-mongo.override.yaml
+  - compose-mongo.yaml
+
 services:
   app:
     image: NLCaceres/infection_protection_backend_host

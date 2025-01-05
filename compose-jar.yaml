@@ -1,9 +1,8 @@
 name: infection_protection_app
 
 include:
-  - path:
-    - compose-mongo.yaml
-    - compose-mongo.override.yaml
+  - compose-mongo.yaml
+
 services:
   app:
     image: NLCaceres/infection_protection_jar_backend

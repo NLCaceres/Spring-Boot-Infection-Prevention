@@ -1,4 +1,4 @@
-name: mongo-server
+name: infection_protection_app
 
 # - Launches a Mongo instance for the Spring-Boot app to serve
 services:
@@ -16,7 +16,12 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
     healthcheck: # ?: Auto-selects the test DB of this Mongo service and "pings" it
       test: mongosh --quiet --port 27017 --eval 'db.runCommand("ping").ok'
+    networks:
+      - main
 
 volumes: # ?: Volumes get created on `docker compose up` IF not already made
   mongodb-data:
   mongodb-config:
+
+networks:
+  main:
