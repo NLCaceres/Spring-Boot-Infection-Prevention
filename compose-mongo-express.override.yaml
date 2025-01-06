@@ -6,6 +6,8 @@ include:
 services:
   mongo-express:
     networks: !reset []
+    networks:
+      - main
     depends_on:
       mongodb:
         condition: service_healthy
