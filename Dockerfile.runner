@@ -4,6 +4,7 @@ RUN mkdir new_tmp
 
 # A lot of the benefits of `scratch` BUT I can debug and be certain more easily
 FROM alpine:3
+RUN apk upgrade --no-cache && apk cache clean
 EXPOSE 8080
 
 USER 1001
