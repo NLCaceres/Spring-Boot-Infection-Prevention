@@ -1,6 +1,7 @@
 package edu.usc.nlcaceres.infectionprotection_backend.migrations;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import org.springframework.data.mongodb.core.query.Update;
@@ -14,16 +15,18 @@ public class RenameReportsHealthPracticeFieldChangeUnit {
   @Execution
   public void execution(MongoTemplate mongoTemplate) {
     // ?: `updateMulti` is the probably less used alternative to Spring's fluent MongoTemplate API
-    mongoTemplate.updateMulti( // ?: like `update().matching().apply().all()`... see `RenameLocations`
-      query(where("healthPractice").exists(true)),
-      new Update().rename("healthPractice", "health_practice"), Report.class
-    );
+    mongoTemplate.bulkOps(BulkMode.ORDERED, Report.class)
+      .updateMulti(
+        query(where("healthPractice").exists(true)),
+        new Update().rename("healthPractice", "health_practice")
+      );
   }
   @RollbackExecution
   public void rollbackExecution(MongoTemplate mongoTemplate) {
-    mongoTemplate.updateMulti(
-      query(where("health_practice").exists(true)),
-      new Update().rename("health_practice", "healthPractice"), Report.class
-    );
+    mongoTemplate.bulkOps(BulkMode.ORDERED, Report.class)
+      .updateMulti(
+        query(where("health_practice").exists(true)),
+        new Update().rename("health_practice", "healthPractice")
+      );
   }
 }
