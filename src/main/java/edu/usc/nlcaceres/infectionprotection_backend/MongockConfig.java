@@ -1,8 +1,10 @@
 package edu.usc.nlcaceres.infectionprotection_backend;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import com.mongodb.ReadConcern;
@@ -16,9 +18,19 @@ import io.mongock.runner.springboot.base.MongockInitializingBeanRunner;
 @Configuration
 public class MongockConfig {
 
+  @Autowired
+  Environment env;
+
   @Bean // ?: Need a ConnectionDriver if not using @EnableMongock in the main App file
   public SpringDataMongoV4Driver mongockDriver(MongoTemplate mongoTemplate) {
-    return SpringDataMongoV4Driver.withDefaultLock(mongoTemplate); // ?: TransactionEnabled by default now!
+    SpringDataMongoV4Driver driver = SpringDataMongoV4Driver.withDefaultLock(mongoTemplate);
+    if (env.getProperty("SPRING_ENV", "").equals("dev")) {
+      driver.disableTransaction(); // ?: Enabled by default but unavailable without Replica sets
+    }
+    else {
+      driver.enableTransaction();
+    }
+    return driver;
   }
 
   // ?: This Bean lets me combine `application.properties`/`properties.yaml` with this Builder's config
@@ -39,5 +51,4 @@ public class MongockConfig {
         .build();
       return new MongoTransactionManager(mongoTemplate.getMongoDatabaseFactory(), transactionalOptions);
   }
-
 }
