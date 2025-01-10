@@ -15,8 +15,14 @@ public class MongoDbConfig {
     @Autowired
     Environment env;
 
+    private String getSpringEnv() {
+        return env.getProperty("SPRING_ENV", "");
+    }
     private boolean isDevMode() {
-        return env.getProperty("SPRING_ENV", "").equals("dev");
+        return getSpringEnv().equals("dev");
+    }
+    private boolean isTesting() {
+        return getSpringEnv().equals("test");
     }
     private String getDatabaseProtocol() {
         return isDevMode() ? "mongodb" : "mongodb+srv";
@@ -31,7 +37,8 @@ public class MongoDbConfig {
         return isDevMode() ? "example" : env.getProperty("MONGO_PASSWORD", "");
     }
     private String getMongoHost() {
-        return isDevMode() ? "mongodb:27017" : env.getProperty("MONGO_HOST", "");
+        return isTesting() ? "localhost:27017" :
+            isDevMode() ? "mongodb:27017" : env.getProperty("MONGO_HOST", "");
     }
     private String mongoURI() {
         // * Using StringBuilder to make the following String:
