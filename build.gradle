@@ -35,6 +35,8 @@ dependencies {
 	implementation 'io.mongock:mongodb-springdata-v4-driver:5.5.0'
 	// Following helps NativeImage build correctly in Spring-Boot 3.4 + Gradle 8
 	implementation('org.reflections:reflections') { version { strictly '0.9.11' } }
+	// Following MUST be `compileOnly` or else GraalVM's Native Image can't be built
+	compileOnly 'org.graalvm.sdk:nativeimage:24.1.1' // Replaces the deprecated `graal-sdk` for v23.1+
 
 //	implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
