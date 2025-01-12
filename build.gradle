@@ -60,7 +60,10 @@ tasks.named('test') {
 graalvmNative {
 	binaries {
 		main {
-			buildArgs(['--static', '--libc=musl', '-march=compatibility'])
+			buildArgs([
+				'--static', '--libc=musl', '-march=compatibility',
+				'--features=edu.usc.nlcaceres.infectionprotection_backend.migrations.ChangeUnitRegistrationFeature',
+			])
 		}
 	}
 }
