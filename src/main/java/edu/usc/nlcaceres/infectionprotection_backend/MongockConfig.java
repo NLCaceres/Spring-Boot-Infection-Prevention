@@ -10,6 +10,7 @@ import com.mongodb.ReadConcern;
 import com.mongodb.ReadPreference;
 import com.mongodb.TransactionOptions;
 import com.mongodb.WriteConcern;
+import edu.usc.nlcaceres.infectionprotection_backend.migrations.Migrations;
 import io.mongock.driver.mongodb.springdata.v4.SpringDataMongoV4Driver;
 import io.mongock.runner.springboot.MongockSpringboot;
 import io.mongock.runner.springboot.base.MongockInitializingBeanRunner;
@@ -36,8 +37,11 @@ public class MongockConfig {
   @Bean // ?: Alternatively, if no `application.properties` needed, I could use the MongockApplicationRunner Bean
   public MongockInitializingBeanRunner mongockRunner(SpringDataMongoV4Driver driver, ApplicationContext context) {
     return MongockSpringboot.builder()
-      .setDriver(driver).setSpringContext(context).setDefaultAuthor("NLCaceres")
+      .setDriver(driver).setDefaultAuthor("NLCaceres")
       .addMigrationScanPackage("edu.usc.nlcaceres.infectionprotection_backend.migrations")
+      .setLockGuardEnabled(false) // Prevents Proxies from being used
+      .addMigrationClasses(Migrations.changeUnits) // https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+      .setSpringContext(context)
       .buildInitializingBeanRunner();
   }
 
