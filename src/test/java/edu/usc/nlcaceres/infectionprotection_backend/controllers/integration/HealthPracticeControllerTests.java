@@ -37,12 +37,15 @@ public class HealthPracticeControllerTests {
     }
     @Test
     public void findSingleHealthPractice() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/healthPractices/5dc9b294cab4fa0bd0b23d4b"))
+        String jsonHealthPractices = mockMvc.perform(get("/api/healthPractices"))
+            .andReturn().getResponse().getContentAsString();
+        HealthPractice firstHealthPractice = mapper.readValue(jsonHealthPractices, HealthPractice[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/healthPractices/" + firstHealthPractice.getId()))
                 .andExpect((status().isOk()))
                 .andReturn().getResponse().getContentAsString();
 
         HealthPractice healthPractice = mapper.readValue(jsonResponse, HealthPractice.class);
-        assertThat(healthPractice.getName()).isEqualTo("Hand Hygiene");
+        assertThat(healthPractice.getName()).isEqualTo(firstHealthPractice.getName());
         assertThat(healthPractice.getPrecaution().getHealthPractices()).isEmpty();
     }
     @Test

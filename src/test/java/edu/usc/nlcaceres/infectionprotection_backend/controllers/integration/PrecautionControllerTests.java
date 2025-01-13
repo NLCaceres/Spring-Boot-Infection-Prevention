@@ -40,13 +40,16 @@ public class PrecautionControllerTests {
     }
     @Test
     public void findSinglePrecaution() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/precautions/5dc9b295cab4fa0bd0b23d57"))
+        String jsonPrecautions = mockMvc.perform(get("/api/precautions"))
+            .andReturn().getResponse().getContentAsString();
+        Precaution firstPrecaution = mapper.readValue(jsonPrecautions, Precaution[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/precautions/" + firstPrecaution.getId()))
                 .andExpect((status().isOk()))
                 .andReturn().getResponse().getContentAsString();
 
         Precaution precaution = mapper.readValue(jsonResponse, Precaution.class);
-        assertThat(precaution.getName()).isEqualTo("Isolation");
-        // Backrefs to the original Precaution are now null since the Response does not include a backref in the HealthPractice key
+        assertThat(precaution.getName()).isEqualTo(firstPrecaution.getName());
+        // Backref to this Precaution now null since no backref in HealthPractice key
         precaution.getHealthPractices().forEach(healthPractice -> assertThat(healthPractice.getPrecaution()).isNull());
     }
     @Test

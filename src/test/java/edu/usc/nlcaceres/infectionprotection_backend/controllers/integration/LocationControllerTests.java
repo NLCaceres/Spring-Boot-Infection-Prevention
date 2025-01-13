@@ -32,18 +32,21 @@ public class LocationControllerTests {
                 .andReturn().getResponse().getContentAsString();
 
         List<Location> actualList = Arrays.asList(mapper.readValue(jsonResponse, Location[].class));
-        assertThat(actualList).hasSize(3);
+        assertThat(actualList).hasSize(5);
     }
     @Test
     public void findSingleLocation() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/locations/5dc9b294cab4fa0bd0b23d48"))
+        String jsonLocations = mockMvc.perform(get("/api/locations"))
+            .andReturn().getResponse().getContentAsString();
+        Location firstLocation = mapper.readValue(jsonLocations, Location[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/locations/" + firstLocation.getId()))
                 .andExpect((status().isOk()))
                 .andReturn().getResponse().getContentAsString();
 
         Location location = mapper.readValue(jsonResponse, Location.class);
-        assertThat(location.getFacilityName()).isEqualTo("USC");
-        assertThat(location.getUnitNum()).isEqualTo("2");
-        assertThat(location.getRoomNum()).isEqualTo("123");
+        assertThat(location.getFacilityName()).isEqualTo(firstLocation.getFacilityName());
+        assertThat(location.getUnitNum()).isEqualTo(firstLocation.getUnitNum());
+        assertThat(location.getRoomNum()).isEqualTo(firstLocation.getRoomNum());
     }
     @Test
     public void unableToFindLocation() throws Exception {

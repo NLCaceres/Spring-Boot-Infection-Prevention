@@ -36,13 +36,16 @@ public class ProfessionControllerTests {
     }
     @Test
     public void findSingleProfession() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/professions/5dc9b294cab4fa0bd0b23d49"))
+        String jsonProfessions = mockMvc.perform(get("/api/professions"))
+            .andReturn().getResponse().getContentAsString();
+        Profession firstProfession = mapper.readValue(jsonProfessions, Profession[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/professions/" + firstProfession.getId()))
                 .andExpect((status().isOk()))
                 .andReturn().getResponse().getContentAsString();
 
         Profession profession = mapper.readValue(jsonResponse, Profession.class);
-        assertThat(profession.getObservedOccupation()).isEqualTo("Clinic");
-        assertThat(profession.getServiceDiscipline()).isEqualTo("Nurse");
+        assertThat(profession.getObservedOccupation()).isEqualTo(firstProfession.getObservedOccupation());
+        assertThat(profession.getServiceDiscipline()).isEqualTo(firstProfession.getServiceDiscipline());
     }
     @Test
     public void unableToFindProfession() throws Exception {

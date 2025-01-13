@@ -39,13 +39,15 @@ public class EmployeeControllerTests {
     }
     @Test
     public void findSingleEmployee() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/employees/5dc9b295cab4fa0bd0b23d52"))
-                .andExpect((status().isOk()))
-                .andReturn().getResponse().getContentAsString();
+        String jsonEmployees = mockMvc.perform(get("/api/employees"))
+            .andReturn().getResponse().getContentAsString();
+        Employee firstEmployee = mapper.readValue(jsonEmployees, Employee[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/employees/" + firstEmployee.getId()))
+            .andExpect((status().isOk())).andReturn().getResponse().getContentAsString();
 
         Employee actualEmployee = mapper.readValue(jsonResponse, Employee.class);
-        assertThat(actualEmployee.getFirstName()).isEqualTo("Jill");
-        assertThat(actualEmployee.getSurname()).isEqualTo("Chambers");
+        assertThat(actualEmployee.getFirstName()).isEqualTo(firstEmployee.getFirstName());
+        assertThat(actualEmployee.getSurname()).isEqualTo(firstEmployee.getSurname());
     }
     @Test
     public void unableToFindEmployee() throws Exception {

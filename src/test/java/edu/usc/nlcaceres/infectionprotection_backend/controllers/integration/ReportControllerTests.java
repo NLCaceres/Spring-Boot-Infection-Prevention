@@ -38,21 +38,24 @@ public class ReportControllerTests {
     }
     @Test
     public void findSingleReport() throws Exception {
-        String jsonResponse = mockMvc.perform(get("/api/reports/5dc9b295cab4fa0bd0b23d58"))
+        String jsonReports = mockMvc.perform(get("/api/reports"))
+            .andReturn().getResponse().getContentAsString();
+        Report firstReport = mapper.readValue(jsonReports, Report[].class)[0];
+        String jsonResponse = mockMvc.perform(get("/api/reports/" + firstReport.getId()))
                 .andExpect((status().isOk()))
                 .andReturn().getResponse().getContentAsString();
 
         Report report = mapper.readValue(jsonResponse, Report.class);
 
-        assertThat(report.getEmployee().getFirstName()).isEqualTo("John");
-        assertThat(report.getEmployee().getSurname()).isEqualTo("Smith");
+        assertThat(report.getEmployee().getFirstName()).isEqualTo(firstReport.getEmployee().getFirstName());
+        assertThat(report.getEmployee().getSurname()).isEqualTo(firstReport.getEmployee().getSurname());
 
-        assertThat(report.getLocation().getFacilityName()).isEqualTo("HSC");
-        assertThat(report.getLocation().getUnitNum()).isEqualTo("5");
-        assertThat(report.getLocation().getRoomNum()).isEqualTo("123");
+        assertThat(report.getLocation().getFacilityName()).isEqualTo(firstReport.getLocation().getFacilityName());
+        assertThat(report.getLocation().getUnitNum()).isEqualTo(firstReport.getLocation().getUnitNum());
+        assertThat(report.getLocation().getRoomNum()).isEqualTo(firstReport.getLocation().getRoomNum());
 
-        assertThat(report.getHealthPractice().getName()).isEqualTo("Hand Hygiene");
-        // Backrefs to the Report's HealthPractice are now null (since not included in the Response JSON)
+        assertThat(report.getHealthPractice().getName()).isEqualTo(firstReport.getHealthPractice().getName());
+        // Backrefs in Report.HealthPractice now null since excluded by Precaution's JsonView
         assertThat(report.getHealthPractice().getPrecaution().getHealthPractices()).isEmpty();
     }
     @Test
