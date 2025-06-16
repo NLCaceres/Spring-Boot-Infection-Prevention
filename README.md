@@ -31,17 +31,37 @@ GraphQL very easy, giving me time to judge BOTH, especially from mobile app clie
 - Email notifications sent to supervisors if employee is reported
 - Add indexes for uniqueness in Locations, HealthPractices & Precautions Mongo Collections
 
+## Gradle Usage
+
+- Since this project uses Gradle, it's helpful to know how to translate [Maven commands](https://docs.gradle.org/current/userguide/migrating_from_maven.html)
+as well as how to update Gradle itself, `./gradlew wrapper --gradle-version <version-num>`
+- Gradle Commands can be run via `./gradlew` followed by the task you want to run
+  - Ex: `./gradlew clean` to clean the build folder
+  - Ex: `./gradlew assemble` builds the project without testing
+  - Ex: `./gradlew build` builds AND tests the project (by running `assemble` & `check`)
+  - [See here for more common Base Gradle tasks](https://docs.gradle.org/current/userguide/base_plugin.html)
+  - Spring-Boot also has a few helpful tasks, namely `bootJar` and `bootRun` for
+  building and running your app, and these hook into the Base Gradle Plugin Tasks
+  like `assemble` & `check`, ensuring every concern is covered for a Spring app
+    - `bootJar` creates a runnable `.jar` file in `build/libs` as well as a unrunnable
+    `plain-jar` file that contains only your project's classes and resources
+    - `bootRun` simply runs the project `public static void main` in the class
+    marked `@SpringBootApplication`
+
 ## Docker Usage
 
 - The Dockerfile is split into two images, one for building the Native Image and
 another to run that Native Image in a lean, efficient `Alpine` Linux container with
 limited permissions for extra security
 - Recommended Docker commands:
-  - `docker build -t <name>/infection_protection_native_backend -f Dockerfile.builder`
+  - `docker build -t <name>/infection_protection_native_backend
+                  -f Dockerfile.builder .`
     - Run as needed to make new builds of the Spring Boot backend Native Image
-  - `docker build -t <name>/infection_protection_backend_host -f Dockerfile.runner`
+  - `docker build -t <name>/infection_protection_backend_host
+                  -f Dockerfile.runner .`
     - Pulls the Native Image created by the `Dockerfile.builder` and hosts it
-  - `docker run --name <name> -d --env-file <env-file-path> -p <ip:port:port> --rm <name>/infection_protection_backend_host`
+  - `docker run --name <name> -d --env-file <env-file-path>
+               -p <ip:port:port> --rm <name>/infection_protection_backend_host`
     - Runs the Native Image in the host image with a name for the container, the
     local env file loaded, and exposed on the provided port
     - `--rm` flag ensures the container is removed after it finishes/stops running
@@ -49,7 +69,13 @@ limited permissions for extra security
   - `docker ps` - Lists out containers
   - `docker images`
   - `docker stop <container-name>`
-  - `docker rmi <image-name>` - Remove images by their name
+  - `docker rmi <image-name>` - Remove images by their name & version/tag
+- For normal Jar file based deployment, consider `eclipse-temurin`, `sapmachine`
+and `ubuntu/jre`, using their JDK to build the jar file, and then a JRE to run the
+App with its embedded Tomcat servlet
+  - For help, check out [Dockerizing Spring Boot](https://www.baeldung.com/dockerizing-spring-boot-application)
+  and [Intro to Docker Secrets](https://www.baeldung.com/ops/docker-secrets)
+  in addition to [secrets in Compose](https://docs.docker.com/compose/how-tos/use-secrets/)
 
 ## Related Apps
 
