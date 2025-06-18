@@ -6,7 +6,7 @@ services:
   mongodb: # ?: `mongodb://mongodb:27017/` vs naming it `mongo` to get `mongodb://mongo:27017`
     image: mongo:7.0.12-jammy
     container_name: mongodb
-    ports: # ?: The Port value is delim by ":". Left for HOST-visible port, right to other services
+    ports: # ?: Port value is delim by ":". Left for HOST-visible port, right for other services
       - "127.0.0.1:27017:27017"
     volumes: # ?: Volumes also use ":" for HOST-visible DB name vs Service-visible name
       - mongodb-data:/data/db
