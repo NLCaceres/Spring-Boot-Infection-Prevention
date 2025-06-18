@@ -5,8 +5,7 @@ include:
 
 services:
   mongo-express:
-    networks: !reset []
-    networks:
+    networks: !override
       - main
     depends_on:
       mongodb:
