@@ -1,4 +1,4 @@
-name: infectionprotection
+name: infection_protection_app
 
 services:
   app:
@@ -11,15 +11,16 @@ services:
       - "127.0.0.1:8080:8080"
     env_file:
       - ./src/main/resources/.env
-    depends_on: # ?: This short form equates to `restart: false, condition: service_started, required: true`
+    depends_on: # ?: This becomes `restart: false, condition: service_started, required: true`
       - mongodb
   mongodb:
     image: mongo:7.0.12-jammy
     container_name: mongodb
-    ports: # ?: Port value before the colon is available to the HOST; the Port value after is the SERVICES'
+    ports: # ?: Port value before colon is seen by HOST; the Port value after is for the SERVICES
       - "127.0.0.1:27017:27017"
-    volumes: # ?: Similar to "PORT:PORT", I SEE mongodb-data (as the host), the services store data in the container "/data"
-      - mongodb-data:/data
+    volumes: # ?: Like "PORT:PORT", I/host see mongodb-data, services add data to /data storage
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
@@ -35,5 +36,7 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb
       - ME_CONFIG_BASICAUTH=false
       # - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27017/
+
 volumes: # ?: Volumes are created when docker compose is run IF they aren't already created
   mongodb-data:
+  mongodb-config:
