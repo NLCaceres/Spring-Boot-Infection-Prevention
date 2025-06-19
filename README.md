@@ -70,6 +70,24 @@ limited permissions for extra security
   - `docker images`
   - `docker stop <container-name>`
   - `docker rmi <image-name>` - Remove images by their name & version/tag
+- Recommended Compose commands
+  - `docker compose up -d`
+    - Runs `compose.yaml` in detached mode with a MongoDB instance available
+    - Add `-f docker-compose.yaml` to run `docker-compose.yaml` instead of
+    `compose.yaml`, starting the app, MongoDB, AND adds a Mongo-Express instance
+      - Run `docker compose -f compose-mongo-express.yaml up -d` to add a Mongo
+      Express instance if already running the typical `docker compose up -d`
+    - Add `--env-file .env.mongo-express` to run `compose-mongo-express.yaml`
+    with its override file `compose-mongo-express.override.yaml` and starts
+    a Mongo instance, WITHOUT running the main app
+    - Add `-f compose-jar.yaml` to run `.jar` version of the app alongside
+    a MongoDB instance
+  - `docker compose ls` - Lists running containers
+  - `docker compose down` - Stops AND removes the running containers
+    - `docker compose stop` - Stops any running containers
+    - `docker compose rm` - Removes all stopped container upon confirmation
+    - Adding the `--rmi` flag removes the associated container images
+    - Adding the `-v` flag removes any associated volumes
 - For normal Jar file based deployment, consider `eclipse-temurin`, `sapmachine`
 and `ubuntu/jre`, using their JDK to build the jar file, and then a JRE to run the
 App with its embedded Tomcat servlet
